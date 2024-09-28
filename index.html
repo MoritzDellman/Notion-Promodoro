@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer | Focus</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="timer">
+            <h1>⏰ Pomodoro Timer</h1>
+
+            <div class="button-container">
+                <button class="button active" id="pomodoro-session">Pomodoro</button>
+                <button class="button" id="short-break">Short Break</button>
+                <button class="button" id="long-break">Long Break</button>
+            </div>
+
+            <main>
+                <div class="pomodoro">
+                    <div id="pomodoro-timer" class="timer-display" data-duration="25.00" >
+                        <h1 class="time">25:00</h1>
+                    </div>
+
+                    <div id="short-timer" class="timer-display" data-duration="5.00">
+                        <h1 class="time">5:00</h1>
+                    </div>
+
+                    <div id="long-timer" class="timer-display" data-duration="10.00">
+                        <h1 class="time">15:00</h1>
+                    </div>
+                </div>
+            </main>
+
+            <div class="buttons">
+                <button id="start">START</button>
+                <button id="stop">STOP</button>
+            </div>
+        </div>
+    </div>
+
+    <!--CSS-->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background-color: #03061fd5;
+    color: #d7e0ff;
+}
+
+.container {
+    text-align: center;
+    width: 100%;
+    margin: 4% 0;
+}
+
+.timer {
+    display: inline-block;
+    padding: 2%;
+    width: 50%;
+    box-sizing: border-box;
+}
+
+main {
+    width: 12.5rem;
+    height: 12.5rem;
+    border-radius: 25%;
+    text-align: center;
+    margin: 0 auto;
+    margin-bottom: 1rem;
+}
+
+h1 {
+    font-size: 1rem;
+    margin: 10px auto;
+}
+
+.button-container {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.pomodoro {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    margin: 2.5rem 0;
+    text-align: center;
+    border-radius: 50%;
+    background: #151932;
+    box-shadow: 20px 20px 42px #0e1021, -20px -20px 42px #1c2244;
+}
+
+.pomodoro::before {
+    content: "";
+    position: absolute;
+    border: 7px solid royalblue;
+    border-radius: 50%;
+    width: 11rem;
+    height: 11rem;
+}
+
+.time {
+    font-size: 2.5rem !important;
+    margin: 10px auto;
+}
+
+.button-container {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.button {
+    background-color: #2e325a;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin: 5px;
+    cursor: pointer;
+    transition: all .2s ease-in;
+}
+
+.button.active, .button:hover {
+    background-color: #020323;
+}
+
+.hidden {
+    display: block;
+}
+
+.timer-display {
+    font-size: 5rem;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.buttons {
+    margin-top: 20px;
+}
+
+#start, #stop {
+    background-color: #2e325a;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+    transition: all .2s ease-in;
+}
+
+#stop:hover {
+    background-color: tomato;
+}
+
+#start:hover {
+    background-color: #219a52;
+}
+
+/* Responsiveness */
+
+@media screen and (min-width: 320px) and (max-width: 600px) {
+    .container {
+        transform: scale(0.9)
+    }
+
+    .timer {
+        width: 500px;
+    }
+}
+    </style>
+
+    <!-- JS -->
+    <script>
+        let pomodoro = document.getElementById("pomodoro-timer")
+let short = document.getElementById("short-timer")
+let long = document.getElementById("long-timer")
+let timers = document.querySelectorAll(".timer-display")
+let session = document.getElementById("pomodoro-session")
+let shortBreak = document.getElementById("short-break")
+let longBreak = document.getElementById("long-break")
+let startBtn = document.getElementById("start")
+let stopBtn = document.getElementById("stop")
+let button = document.querySelector(".button")
+
+let currentTimer = pomodoro
+let myInterval = null
+
+// show the default timer
+function showDefaultTimer() {
+    pomodoro.style.display = "block"
+    short.style.display = "none"
+    long.style.display = "none"
+}
+
+showDefaultTimer()
+
+function hideAll() {
+    timers.forEach((timer) => (
+        timer.style.display = "none"
+    ))
+}
+
+session.addEventListener("click", () => {
+    hideAll()
+
+    pomodoro.style.display = "block"
+
+    session.classList.add("active")
+    shortBreak.classList.remove("active")
+    longBreak.classList.remove("active")
+
+    currentTimer = pomodoro
+})
+
+shortBreak.addEventListener("click", () => {
+    hideAll()
+
+    short.style.display = "block"
+
+    session.classList.remove("active")
+    shortBreak.classList.add("active")
+    longBreak.classList.remove("active")
+
+    currentTimer = short
+})
+
+longBreak.addEventListener("click", () => {
+    hideAll()
+
+    long.style.display = "block"
+
+    session.classList.remove("active")
+    shortBreak.classList.remove("active")
+    longBreak.classList.add("active")
+
+    currentTimer = long
+})
+
+// Start the timer on click
+function startTimer(timerDisplay) {
+    if (myInterval) {
+        clearInterval(myInterval);
+      }
+
+      timerDuration = timerDisplay
+        .getAttribute("data-duration")
+        .split(":")[0];
+
+    let durationinmiliseconds = timerDuration * 60 * 1000;
+    let endTimestamp = Date.now() + durationinmiliseconds;
+
+    myInterval = setInterval(function () {
+        const timeRemaining = new Date(endTimestamp - Date.now());
+
+        if (timeRemaining <= 0) {
+          clearInterval(myInterval);
+          timerDisplay.textContent = "00:00";
+          const alarm = new Audio(
+            "https://klingeltonekostenlos.de/wp-content/uploads/2023/12/Wecker-Für-Guten-Morgen.mp3"
+          );
+          alarm.play();
+        } else {
+          const minutes = Math.floor(timeRemaining / 60000);
+          const seconds = ((timeRemaining % 60000) / 1000).toFixed(0);
+          const formattedTime = `${minutes}:${seconds
+            .toString()
+            .padStart(2, "0")}`;
+          timerDisplay.textContent = formattedTime;
+        }
+      }, 1000);
+}
+
+startBtn.addEventListener("click", () => {
+    startTimer(currentTimer)
+})
+
+stopBtn.addEventListener("click", () => {
+        clearInterval(myInterval)
+})
+    </script>
+</body>
+
+</html>
