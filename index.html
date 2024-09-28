@@ -46,7 +46,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-* {
+        * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -56,19 +56,18 @@
 body {
     background-color: #03061fd5;
     color: #d7e0ff;
-    border-radius: 10%;
+    border-color: #219a52;
+    text-align: start;
+    
 }
 
 .container {
-    text-align: center;
-    width: 100%;
-    justify-content: center;
+    text-align: start;
 }
 
 .timer {
     display: inline-block;
     box-sizing: border-box;
-    justify-content: center;
 }
 
 main {
@@ -76,19 +75,19 @@ main {
     height: 12.5rem;
     border-radius: 25%;
     text-align: center;
-    margin: 0 auto;
+    margin: 0 30%;
     margin-bottom: 1rem;
 }
 
 h1 {
     font-size: 1rem;
-    margin: 10px auto;
+    margin: 10px 10px;
+    text-align: center;
 }
 
 .button-container {
     margin-top: 10px;
     display: flex;
-    justify-content: center;
 }
 
 .pomodoro {
@@ -153,6 +152,7 @@ h1 {
 
 .buttons {
     margin-top: 20px;
+    text-align: center;
 }
 
 #start, #stop {
@@ -176,15 +176,7 @@ h1 {
 
 /* Responsiveness */
 
-@media screen and (min-width: 320px) and (max-width: 600px) {
-    .container {
-        transform: scale(0.9)
-    }
 
-    .timer {
-        width: 500px;
-    }
-}
     </style>
 
     <!-- JS -->
